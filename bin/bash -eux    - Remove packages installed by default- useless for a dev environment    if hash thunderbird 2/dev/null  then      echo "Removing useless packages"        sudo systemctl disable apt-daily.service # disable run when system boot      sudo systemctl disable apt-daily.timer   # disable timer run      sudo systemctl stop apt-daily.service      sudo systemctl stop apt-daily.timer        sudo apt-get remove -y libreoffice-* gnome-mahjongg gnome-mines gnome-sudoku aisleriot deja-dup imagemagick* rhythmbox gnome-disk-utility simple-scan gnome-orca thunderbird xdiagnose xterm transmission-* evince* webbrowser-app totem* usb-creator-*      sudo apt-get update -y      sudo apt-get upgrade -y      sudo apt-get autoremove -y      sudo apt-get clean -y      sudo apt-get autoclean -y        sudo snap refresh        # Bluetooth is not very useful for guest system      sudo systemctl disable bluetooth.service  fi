@@ -1,0 +1,49 @@
+#!/bin/bash -eux
+
+
+
+# Remove packages installed by default, useless for a dev environment
+
+
+
+if hash thunderbird 2>/dev/null
+
+then
+
+    echo "Removing useless packages"
+
+
+
+    sudo systemctl disable apt-daily.service # disable run when system boot
+
+    sudo systemctl disable apt-daily.timer   # disable timer run
+
+    sudo systemctl stop apt-daily.service
+
+    sudo systemctl stop apt-daily.timer
+
+
+
+    sudo apt-get remove -y libreoffice-* gnome-mahjongg gnome-mines gnome-sudoku aisleriot deja-dup imagemagick* rhythmbox gnome-disk-utility simple-scan gnome-orca thunderbird xdiagnose xterm transmission-* evince* webbrowser-app totem* usb-creator-*
+
+    sudo apt-get update -y
+
+    sudo apt-get upgrade -y
+
+    sudo apt-get autoremove -y
+
+    sudo apt-get clean -y
+
+    sudo apt-get autoclean -y
+
+
+
+    sudo snap refresh
+
+
+
+    # Bluetooth is not very useful for guest system
+
+    sudo systemctl disable bluetooth.service
+
+fi
